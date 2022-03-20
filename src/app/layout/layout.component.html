@@ -1,5 +1,9 @@
-<div class="container">
-  <inv-header></inv-header>
-  <ng-content></ng-content>
-  <inv-footer></inv-footer>
+<div id="container">
+  <header><inv-header></inv-header></header>
+  <main>
+    <section>
+      <ng-content></ng-content>
+    </section>
+  </main>
+  <footer><inv-footer></inv-footer></footer>
 </div>
