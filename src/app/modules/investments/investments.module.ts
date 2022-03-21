@@ -1,3 +1,4 @@
+import { InvestmentsFacade } from "./investments-facade";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
@@ -14,5 +15,6 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     SharedModule,
     FlexLayoutModule,
   ],
+  providers: [InvestmentsFacade],
 })
 export class InvestmentsModule {}
