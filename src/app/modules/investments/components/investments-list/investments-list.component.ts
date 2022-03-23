@@ -37,8 +37,9 @@ export class InvestmentsListComponent implements OnInit {
   }
 
   actionDetail(data: Investments) {
-    this.router.navigateByUrl("investments/detail", {
-      state: data,
-    });
+    if (data.indicadorCarencia === "N")
+      this.router.navigateByUrl("investments/detail", {
+        state: data,
+      });
   }
 }
