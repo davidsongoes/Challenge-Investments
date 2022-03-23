@@ -32,6 +32,7 @@ export class InvestmentDetailComponent implements OnInit {
   form: FormGroup = this.fb.group({
     resgates: this.fb.array([]),
   });
+  valorTotal = 0;
 
   constructor(
     private router: Router,
@@ -49,7 +50,13 @@ export class InvestmentDetailComponent implements OnInit {
       this.form.patchValue({
         resgates: this.data.acoes,
       });
-      console.log(this.form.controls);
+
+      this.form.get("resgates")?.valueChanges.subscribe((val) => {
+        let soma = 0;
+        this.resgates.controls.forEach((control) => {
+          this.valorTotal = soma += Number(control.value.saldoResgatar);
+        });
+      });
     } else {
       this.router.navigate([""]);
     }
@@ -66,10 +73,7 @@ export class InvestmentDetailComponent implements OnInit {
       id: [],
       nome: [],
       percentual: [],
-      saldoResgatar: this.fb.control(
-        "",
-        Validators.max(parseFloat(valorResgateMaximo.toFixed(2)))
-      ),
+      saldoResgatar: ["", Validators.max(valorResgateMaximo)],
     });
   }
 
@@ -80,9 +84,5 @@ export class InvestmentDetailComponent implements OnInit {
 
   onSubmit() {
     console.log(this.form.value);
-  }
-
-  addValidatorMaxResgate(percentual: number): number {
-    return this.data.saldoAcumulado;
   }
 }
