@@ -1,3 +1,5 @@
+import { GenericDialogComponent } from "./../../../../shared/generic-dialog/generic-dialog.component";
+import { GenericDialogModel } from "./../../../../shared/generic-dialog/generic.model";
 import { Shares } from "./../../../../models/shares.model";
 import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
@@ -10,6 +12,8 @@ import {
   trigger,
 } from "@angular/animations";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
+import { take } from "rxjs";
 
 @Component({
   selector: "inv-investment-detail",
@@ -32,12 +36,13 @@ export class InvestmentDetailComponent implements OnInit {
   form: FormGroup = this.fb.group({
     resgates: this.fb.array([]),
   });
-  valorTotal = 0;
+  valorTotal: number = 0;
 
   constructor(
     private router: Router,
     private location: Location,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -50,8 +55,7 @@ export class InvestmentDetailComponent implements OnInit {
       this.form.patchValue({
         resgates: this.data.acoes,
       });
-
-      this.form.get("resgates")?.valueChanges.subscribe((val) => {
+      this.form.get("resgates")?.valueChanges.subscribe((controls) => {
         let soma = 0;
         this.resgates.controls.forEach((control) => {
           this.valorTotal = soma += Number(control.value.saldoResgatar);
@@ -60,7 +64,6 @@ export class InvestmentDetailComponent implements OnInit {
     } else {
       this.router.navigate([""]);
     }
-    console.log(this.data);
   }
 
   get resgates() {
@@ -82,7 +85,60 @@ export class InvestmentDetailComponent implements OnInit {
     return saldoAcumulado;
   }
 
+  openDialog(dataDialog: GenericDialogModel) {
+    this.dialog.open(GenericDialogComponent, {
+      data: dataDialog,
+    });
+    this.dialog.afterAllClosed.pipe(take(1)).subscribe(() => {
+      if (this.form.valid) {
+        this.router.navigate([""]);
+      }
+    });
+  }
+
+  afterClosedDialog() {
+    this.dialog._getAfterAllClosed();
+  }
+
+  verifyControlErrors() {
+    let textSharesErrorName: string = "";
+    let textSharesErrorValue: string = "";
+    let textSharedError: string = "";
+    this.resgates.controls.map((group: any) => {
+      if (group.get("saldoResgatar").errors) {
+        textSharesErrorName = `<p><strong>${
+          group.get("nome").value
+        }</strong><span>: O valor a resgatar não pode ser maior que `;
+        textSharesErrorValue = `${group.get("saldoResgatar").errors.max.max}`;
+        textSharedError +=
+          textSharesErrorName +
+          Number(textSharesErrorValue).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          });
+        +`</span></p><br>`;
+      }
+    });
+    return textSharedError;
+  }
+
   onSubmit() {
-    console.log(this.form.value);
+    let textShareError = this.verifyControlErrors();
+    console.log(this.verifyControlErrors());
+    if (this.form.invalid) {
+      this.openDialog({
+        title: "DADOS INVÁLIDOS!",
+        content: `<p>Você preencheu um ou mais campos com um valor acima do permitido:</p><br>`,
+        content2: `${textShareError}.`,
+        buttonTitle: "Corrigir",
+      });
+    } else {
+      this.openDialog({
+        title: "Resgate efetuado com sucesso!",
+        content: ``,
+        content2: ``,
+        buttonTitle: "Novo Resgate",
+      });
+    }
   }
 }
