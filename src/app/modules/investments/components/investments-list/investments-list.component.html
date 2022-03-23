@@ -67,6 +67,13 @@
       *matRowDef="let row; columns: displayedColumns"
       (click)="actionDetail(row)"
       [ngStyle]="{ cursor: row.indicadorCarencia === 'N' ? 'pointer' : 'auto' }"
+      [matTooltip]="
+        row.indicadorCarencia === 'N'
+          ? 'Clique para acessar o Resgate Personalizado'
+          : 'Período de carência ativa'
+      "
+      matTooltipPosition="below"
+      matTooltipHideDelay="80"
     ></tr>
   </table>
 </div>
