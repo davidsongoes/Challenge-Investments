@@ -1,16 +1,20 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterModule } from "@angular/router";
+import { HttpClientModule } from "@angular/common/http";
+import { InvestmentsFacade } from "./../../investments-facade";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { InvestmentsListComponent } from './investments-list.component';
+import { InvestmentsListComponent } from "./investments-list.component";
 
-describe('InvestmentsListComponent', () => {
+describe("InvestmentsListComponent", () => {
   let component: InvestmentsListComponent;
   let fixture: ComponentFixture<InvestmentsListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InvestmentsListComponent ]
-    })
-    .compileComponents();
+      providers: [InvestmentsFacade],
+      imports: [HttpClientModule, RouterModule],
+      declarations: [InvestmentsListComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +23,7 @@ describe('InvestmentsListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
