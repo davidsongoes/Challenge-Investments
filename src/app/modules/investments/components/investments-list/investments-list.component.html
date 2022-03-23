@@ -1,23 +1,26 @@
 <div class="nav-bar">
   <mat-card>
-    <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
       <div fxLayout="row" fxLayoutAlign="start center" style="width: 80%">
-        <mat-card-title>{{ title }}</mat-card-title>
+        <h2>{{ title }}</h2>
       </div>
       <div
         fxLayout="row"
         fxLayoutAlign="end center"
         fxLayoutGap="10"
         style="width: 20%"
-      >
-        <button mat-raised-button color="accent">Action</button>
-        <button mat-raised-button color="accent">Action</button>
-      </div>
-    </mat-card-header>
+      ></div>
+    </div>
   </mat-card>
 </div>
-<div class="content" fxLayout="row" fxLayoutAlign="center center">
-  <table mat-table [dataSource]="data" class="mat-elevation-z8">
+<div
+  *ngIf="data$ | async as investments; else loading"
+  class="content"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+  @fadeIn
+>
+  <table mat-table [dataSource]="investments" class="mat-elevation-z8">
     <ng-container matColumnDef="nome">
       <th mat-header-cell *matHeaderCellDef>Nome</th>
       <td mat-cell *matCellDef="let element">{{ element.nome }}</td>
@@ -28,13 +31,21 @@
     </ng-container>
     <ng-container matColumnDef="saldoTotal">
       <th mat-header-cell *matHeaderCellDef>Saldo Total</th>
-      <td mat-cell *matCellDef="let element">{{ element.saldoTotal }}</td>
+      <td mat-cell *matCellDef="let element">
+        {{ element.saldoTotal | currency }}
+      </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr
       mat-row
       *matRowDef="let row; columns: displayedColumns"
       style="cursor: pointer"
+      (click)="actionDetail(row)"
     ></tr>
   </table>
 </div>
+<ng-template #loading>
+  <div fxLayout="row" fxLayoutAlign="center center" class="loading-spinner">
+    <mat-spinner color="primary"></mat-spinner>
+  </div>
+</ng-template>

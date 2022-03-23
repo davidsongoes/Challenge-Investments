@@ -7,3 +7,14 @@
 table {
   width: 100% !important;
 }
+.loading-spinner {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  height: 248px;
+  justify-content: center;
+  padding: 25px;
+  margin: 0px 35px 0px 35px;
+}
+h2 {
+  margin: 0 0 !important;
+}
