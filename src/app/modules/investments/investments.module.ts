@@ -6,12 +6,16 @@ import { InvestmentsRoutingModule } from "./investments-routing.module";
 import { InvestmentsListComponent } from "./components/investments-list/investments-list.component";
 import { SharedModule } from "src/app/shared/shared.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { InvestmentDetailComponent } from "./components/investment-detail/investment-detail.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
-  declarations: [InvestmentsListComponent],
+  declarations: [InvestmentsListComponent, InvestmentDetailComponent],
   imports: [
     CommonModule,
     InvestmentsRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     FlexLayoutModule,
   ],
