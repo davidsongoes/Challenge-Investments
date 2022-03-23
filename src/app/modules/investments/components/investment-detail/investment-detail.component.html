@@ -1,0 +1,133 @@
+<div class="nav-bar">
+  <mat-card>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxLayout="row" fxLayoutAlign="start center" style="width: 80%">
+        <h2>{{ title }}</h2>
+      </div>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="end center"
+        fxLayoutGap="10"
+        style="width: 20%"
+      >
+        <button mat-raised-button color="accent" [routerLink]="['']">
+          Voltar
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>
+<form [formGroup]="form" (submit)="onSubmit()" autocomplete="off" novalidate>
+  <div class="content">
+    <div>
+      <h2>Dados dos Investimentos</h2>
+      <mat-card @fadeIn>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+          <div style="display: flex; align-items: center">
+            <mat-icon style="margin-right: 15px">person</mat-icon>
+            <div style="margin-top: 30px">
+              <span>Nome</span>
+              <h4>{{ data?.nome }}</h4>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center">
+            <mat-icon style="margin-right: 15px">trending_up</mat-icon>
+            <div style="margin-top: 30px">
+              <span>Objetivo</span>
+              <h4>{{ data?.objetivo }}</h4>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center">
+            <mat-icon style="margin-right: 15px">paid</mat-icon>
+            <div style="margin-top: 30px">
+              <span>Saldo Total</span>
+              <h4>{{ data?.saldoTotal | currency }}</h4>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <br />
+    <div>
+      <h2>Resgate</h2>
+      <div *ngIf="data" @fadeIn>
+        <ng-container formArrayName="resgates">
+          <table
+            mat-table
+            [dataSource]="resgates.controls"
+            class="mat-elevation-z8"
+          >
+            <ng-container matColumnDef="nome">
+              <th mat-header-cell *matHeaderCellDef>Ação</th>
+              <td mat-cell *matCellDef="let element" [formGroup]="element">
+                {{ element.get("nome").value }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="saldoAcumulado">
+              <th mat-header-cell *matHeaderCellDef>Saldo Acumulado</th>
+              <td mat-cell *matCellDef="let element" [formGroup]="element">
+                {{
+                  calculateSaldoAcumulado(element.get("percentual").value)
+                    | currency: "BRL"
+                }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="saldoResgatar">
+              <th mat-header-cell *matHeaderCellDef>Valor a Resgatar</th>
+              <td
+                mat-cell
+                *matCellDef="let element; let i = index"
+                [formGroup]="element"
+              >
+                <mat-form-field [style.width.px]="330" appearance="fill">
+                  <input
+                    matInput
+                    type="number"
+                    step="0.01"
+                    placeholder="0,00"
+                    formControlName="saldoResgatar"
+                  />
+                  <span matPrefix>R$&nbsp;</span>
+                  <mat-hint
+                    *ngIf="element.get('saldoResgatar').errors?.max"
+                    class="mat-error"
+                    >O valor do resgate não pode ser maior que R$
+                    {{
+                      calculateSaldoAcumulado(element.get("percentual").value)
+                        | currency: "BRL"
+                    }}</mat-hint
+                  >
+                </mat-form-field>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </ng-container>
+      </div>
+    </div>
+    <br />
+    <br />
+    <div>
+      <mat-card>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxLayout="row" fxLayoutAlign="start center" style="width: 80%">
+            <p><strong>Valot total do resgate:</strong></p>
+            <p class="totalRansom">R$0,00</p>
+          </div>
+          <div
+            fxLayout="row"
+            fxLayoutAlign="end center"
+            fxLayoutGap="10"
+            style="width: 20%"
+          >
+            <button mat-raised-button color="primary" type="submit">
+              Salvar
+            </button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <br />
+  </div>
+</form>
