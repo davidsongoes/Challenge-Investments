@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { InvestmentsFacade } from "../../investments-facade";
 import { Investments } from "./../../../../models/investments.model";
 import { Router } from "@angular/router";
