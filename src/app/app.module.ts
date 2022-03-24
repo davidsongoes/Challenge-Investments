@@ -1,5 +1,10 @@
 import { LayoutModule } from "./layout/layout.module";
-import { LOCALE_ID, NgModule, DEFAULT_CURRENCY_CODE } from "@angular/core";
+import {
+  LOCALE_ID,
+  NgModule,
+  DEFAULT_CURRENCY_CODE,
+  ErrorHandler,
+} from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import localePt from "@angular/common/locales/pt";
 import { AppRoutingModule } from "./app-routing.module";
@@ -8,6 +13,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { HttpClientModule } from "@angular/common/http";
 import { registerLocaleData } from "@angular/common";
+import { AppErrorHandler } from "./app-error-handler";
 
 registerLocaleData(localePt, "pt");
 
@@ -24,6 +30,7 @@ registerLocaleData(localePt, "pt");
   providers: [
     { provide: LOCALE_ID, useValue: "pt-BR" },
     { provide: DEFAULT_CURRENCY_CODE, useValue: "BRL" },
+    { provide: ErrorHandler, useClass: AppErrorHandler },
   ],
   bootstrap: [AppComponent],
 })
