@@ -55,7 +55,7 @@ export class InvestmentDetailComponent implements OnInit {
       this.form.patchValue({
         resgates: this.data.acoes,
       });
-      this.form.get("resgates")?.valueChanges.subscribe((controls) => {
+      this.form.get("resgates")?.valueChanges.subscribe(() => {
         let soma = 0;
         this.resgates.controls.forEach((control) => {
           this.valorTotal = soma += Number(control.value.saldoResgatar);
@@ -124,7 +124,6 @@ export class InvestmentDetailComponent implements OnInit {
 
   onSubmit() {
     let textShareError = this.verifyControlErrors();
-    console.log(this.verifyControlErrors());
     if (this.form.invalid) {
       this.openDialog({
         title: "DADOS INVÁLIDOS!",
@@ -135,7 +134,13 @@ export class InvestmentDetailComponent implements OnInit {
     } else {
       this.openDialog({
         title: "Resgate efetuado com sucesso!",
-        content: ``,
+        content: `Valor Resgatado: ${Number(this.valorTotal).toLocaleString(
+          "pt-BR",
+          {
+            style: "currency",
+            currency: "BRL",
+          }
+        )}`,
         content2: ``,
         buttonTitle: "Novo Resgate",
       });
