@@ -1,15 +1,20 @@
+import { OverlayModule } from "@angular/cdk/overlay";
 import { TestBed } from "@angular/core/testing";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { SnackbarService } from "./snack-bar.service";
 
 describe("SnackBarService", () => {
   let service: SnackbarService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [OverlayModule],
+      providers: [MatSnackBar],
+    });
     service = TestBed.inject(SnackbarService);
   });
 
-  it("should be created", () => {
+  it("must be created snackbar", () => {
     expect(service).toBeTruthy();
   });
 });

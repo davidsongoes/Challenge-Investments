@@ -1,4 +1,5 @@
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { SanitizeHtmlPipe } from "./../pipes/sanitize-html.pipe";
+import { MatDialogModule, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { GenericDialogComponent } from "./generic-dialog.component";
@@ -9,8 +10,14 @@ describe("GenericDialogComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [],
-      declarations: [GenericDialogComponent],
+      imports: [MatDialogModule],
+      declarations: [GenericDialogComponent, SanitizeHtmlPipe],
+      providers: [
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
   });
 
@@ -20,7 +27,7 @@ describe("GenericDialogComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it("must create generic dialog", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -49,7 +49,7 @@ export class InvestmentDetailComponent implements OnInit {
     this.data = this.location.getState();
     if (this.data?.navigationId !== 1) {
       const resgatesFormArray = this.resgates;
-      this.data.acoes.forEach((acao: Shares) => {
+      this.data?.acoes?.forEach((acao: Shares) => {
         resgatesFormArray.push(this.createResgateFormGroup(acao.percentual));
       });
       this.form.patchValue({
